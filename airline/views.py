@@ -18,13 +18,14 @@ def find_flight(request):
     body = json.loads(body_unicode)
 
     dep_date = datetime.datetime.strptime(body['dep_date'], '%Y-%m-%d')
-    dep_airport = Airport.objects.get(name__contains=body['dep_airport'])
-    dest_airport = Airport.objects.get(name__contains=body['dest_airport'])
-    num_passengers = body['num_passengers']
-    is_flex = body['is_flex']
-
-    if not dep_airport or not dest_airport:
+    try:
+        dep_airport = Airport.objects.get(name__contains=body['dep_airport'])
+        dest_airport = Airport.objects.get(name__contains=body['dest_airport'])
+    except ObjectDoesNotExist:
         return HttpResponse('No flights found', status=503)
+
+    num_passengers = body['num_passengers']
+    is_flex = body['is_flex'
 
     if is_flex:
         flight_set = Flight.objects.filter(dep_airport=dep_airport,
