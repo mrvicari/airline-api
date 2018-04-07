@@ -21,7 +21,7 @@ def find_flight(request):
     try:
         dep_airport = Airport.objects.get(name__contains=body['dep_airport'])
         dest_airport = Airport.objects.get(name__contains=body['dest_airport'])
-    except ObjectDoesNotExist:
+    except Airport.DoesNotExist:
         return HttpResponse('No flights found', status=503)
 
     num_passengers = body['num_passengers']
