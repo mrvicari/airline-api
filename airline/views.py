@@ -23,6 +23,9 @@ def find_flight(request):
     num_passengers = body['num_passengers']
     is_flex = body['is_flex']
 
+    if not dep_airport or not dest_airport:
+        return HttpResponse('No flights found', status=503)
+
     if is_flex:
         flight_set = Flight.objects.filter(dep_airport=dep_airport,
                                            dest_airport=dest_airport,
