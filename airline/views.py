@@ -137,7 +137,10 @@ def pay_for_booking(request):
     except ObjectDoesNotExist:
         return HttpResponse('No payment provider with ID: ' + body['pay_provider_id'], status=503)
 
-    booking = Booking.objects.get(number=body['booking_num'])
+    try:
+        booking = Booking.objects.get(number=body['booking_num'])
+    except ObjectDoesNotExist:
+        return HttpResponse('No booking number: ' + body['booking_num'], status=503)
 
     invoice_params = {}
     invoice_params['account_num'] = pay_provider.account_number
