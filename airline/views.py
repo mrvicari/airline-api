@@ -229,6 +229,7 @@ def booking_status(request):
     else:
         return HttpResponse('Booking number not found', status=503)
 
+@csrf_exempt
 def cancel_booking(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
