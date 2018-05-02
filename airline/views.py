@@ -19,7 +19,7 @@ def find_flight(request):
 
     try:
         dep_date = datetime.datetime.strptime(body['dep_date'], '%Y-%m-%d')
-    except AttributeError:
+    except ValueError:
         return HttpResponse('Invalid date format', status=503)
 
     try:
