@@ -17,12 +17,16 @@ def find_flight(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
 
-    dep_date = datetime.datetime.strptime(body['dep_date'], '%Y-%m-%d')
+    try:
+        dep_date = datetime.datetime.strptime(body['dep_date'], '%Y-%m-%d')
+    except AttributeError:
+        return HttpResponse('Invalid date format', status=503)
+
     try:
         dep_airport = Airport.objects.get(name__contains=body['dep_airport'])
         dest_airport = Airport.objects.get(name__contains=body['dest_airport'])
     except ObjectDoesNotExist:
-        return HttpResponse('No flights found', status=503)
+        return HttpResponse('Invalid aiport name', status=503)
 
     num_passengers = body['num_passengers']
     is_flex = body['is_flex']
