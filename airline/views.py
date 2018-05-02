@@ -28,7 +28,10 @@ def find_flight(request):
     except ObjectDoesNotExist:
         return HttpResponse('Invalid aiport name', status=503)
 
-    num_passengers = body['num_passengers']
+    if body['num_passengers'].isdigit():
+        num_passengers = body['num_passengers']
+    else:
+        return HttpResponse('Number of passengers is not an integer', status=503)
     is_flex = body['is_flex']
 
     if is_flex:
