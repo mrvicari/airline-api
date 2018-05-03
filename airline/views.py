@@ -20,7 +20,7 @@ def find_flight(request):
     try:
         dep_date = datetime.datetime.strptime(body['dep_date'], '%Y-%m-%d')
     except ValueError:
-        return HttpResponse('Invalid date format', status=503)
+        return HttpResponse('Invalid date format (YYY-MM-DD)', status=503)
 
     try:
         dep_airport = Airport.objects.get(name__contains=body['dep_airport'])
@@ -248,6 +248,6 @@ def cancel_booking(request):
         response['booking_num'] = booking.number
         response['booking_status'] = booking.status
 
-        return HttpResponse(json.dumps(response))
+        return HttpResponse(json.dumps(response), status=201)
     else:
         return HttpResponse('Booking number not found', status=503)
